@@ -65,4 +65,9 @@ public interface ApnsPushNotification {
 	 * Provider Communication with Apple Push Notification Service</a>
 	 */
 	Date getDeliveryInvalidationTime();
+
+	/**
+	 * Hook for client to know this notification has been written to the wire.  If null, won't be called
+	 */
+	Callback0 getSuccessCallback();
 }

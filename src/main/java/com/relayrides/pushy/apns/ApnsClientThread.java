@@ -509,6 +509,9 @@ class ApnsClientThread<T extends ApnsPushNotification> extends Thread {
 							log.trace(String.format("%s successfully wrote notification %d",
 									threadName, sendableNotification.getSequenceNumber()));
 						}
+						if (sendableNotification.getPushNotification().getSuccessCallback() != null) {
+							sendableNotification.getPushNotification().getSuccessCallback().apply();
+						}
 					}
 				}
 			});

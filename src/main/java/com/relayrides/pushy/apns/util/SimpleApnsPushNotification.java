@@ -23,6 +23,7 @@ package com.relayrides.pushy.apns.util;
 
 import java.util.Arrays;
 import java.util.Date;
+import com.relayrides.pushy.apns.Callback0;
 
 import com.relayrides.pushy.apns.ApnsPushNotification;
 
@@ -39,6 +40,7 @@ public class SimpleApnsPushNotification implements ApnsPushNotification {
 	private final byte[] token;
 	private final String payload;
 	private final Date invalidationTime;
+	private final Callback0 successCallback;
 	
 	/**
 	 * Constructs a new push notification with the given token and payload. No expiration time is set for the
@@ -48,7 +50,7 @@ public class SimpleApnsPushNotification implements ApnsPushNotification {
 	 * @param payload the payload to include in this push notification
 	 */
 	public SimpleApnsPushNotification(final byte[] token, final String payload) {
-		this(token, payload, null);
+		this(token, payload, null, null);
 	}
 	
 	/**
@@ -60,9 +62,23 @@ public class SimpleApnsPushNotification implements ApnsPushNotification {
 	 * {@code null}, no delivery attempts beyond the first will be made
 	 */
 	public SimpleApnsPushNotification(final byte[] token, final String payload, final Date invalidationTime) {
+		this(token, payload, invalidationTime, null);
+	}
+
+	/**
+	 * Constructs a new push notification with the given token, payload, delivery expiration time, and success callback.
+	 * 
+	 * @param token the device token to which this push notification should be delivered
+	 * @param payload the payload to include in this push notification
+	 * @param invalidationTime the time at which Apple's servers should stop trying to deliver this message; if
+	 * {@code null}, no delivery attempts beyond the first will be made
+	 * @param successCallback if non-null, will be called when notification is sent.
+	 */
+	public SimpleApnsPushNotification(final byte[] token, final String payload, final Date invalidationTime, final Callback0 successCallback) {
 		this.token = token;
 		this.payload = payload;
 		this.invalidationTime = invalidationTime;
+		this.successCallback = successCallback;
 	}
 
 	/**
@@ -92,6 +108,14 @@ public class SimpleApnsPushNotification implements ApnsPushNotification {
 		return this.invalidationTime;
 	}
 
+	/**
+	 * Returns the callback to be called once this notification is sent.
+	 * 
+	 * @return  the callback to be called once this notification is sent.
+	 */
+	public Callback0 getSuccessCallback() {
+		return this.successCallback;
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
