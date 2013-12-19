@@ -82,4 +82,28 @@ public class TokenUtil {
 
         return builder.toString();
 	}
+
+	/** as tokenBytesToString, with spaces between every 4 bytes / 8 characters */
+	public static String tokenBytesToSpacedString(final byte[] tokenBytes) {
+		final StringBuilder builder = new StringBuilder();
+
+                int i = 0;
+        for (final byte b : tokenBytes) {
+            i += 1;           
+        	final String hexString = Integer.toHexString(b & 0xff);
+        	
+        	if (hexString.length() == 1) {
+        		// We need a leading zero
+        		builder.append("0");
+        	}
+        	
+            builder.append(hexString);
+            if (i % 4 == 0 && i < tokenBytes.length) {
+               builder.append(" ");
+            }
+        }
+
+        return builder.toString();
+	}
+
 }
